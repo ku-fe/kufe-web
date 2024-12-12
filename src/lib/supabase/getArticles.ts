@@ -1,3 +1,5 @@
+'use cache';
+
 import camelcaseKeys from 'camelcase-keys';
 
 import { createClient } from './server';
@@ -12,7 +14,8 @@ export type Article = {
   tags?: string[];
 };
 
-const camelize = (articles: any[]) => articles.map((article) => camelcaseKeys(article));
+const camelize = (articles: any[]) =>
+  articles.map((article) => camelcaseKeys(article));
 
 const formatDate = (date: string) =>
   new Date(date).toLocaleDateString('ko-KR', {
@@ -35,11 +38,15 @@ const getArticles = async (params: PageParams = {}) => {
   const start = (page - 1) * size;
   const end = start + size - 1;
 
-  let query = supabase.from('articles_metadata').select('*', { count: 'exact' });
+  let query = supabase
+    .from('articles_metadata')
+    .select('*', { count: 'exact' });
 
   if (search) {
     const searchTerm = search.replace(/[%_]/g, '\\$&');
-    query = query.or(`title.ilike.*${searchTerm}*,description.ilike.*${searchTerm}*`);
+    query = query.or(
+      `title.ilike.*${searchTerm}*,description.ilike.*${searchTerm}*`,
+    );
   }
 
   if (tags && tags.length > 0) {

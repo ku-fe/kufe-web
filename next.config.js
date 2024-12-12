@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    dynamicIO: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -8,6 +11,6 @@ const nextConfig = {
       },
     ],
   },
-}
+};
 
 module.exports = nextConfig;
